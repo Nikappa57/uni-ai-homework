@@ -72,6 +72,7 @@ class Sudoku:
         FIRST = "first"
         RANDOM = "random"
         MRV = "mrv"
+        ALL = "all"
 
     def get_actions(
         self,
@@ -86,6 +87,8 @@ class Sudoku:
             return self._get_actions_random()
         elif strategy == self.ActionsStrategy.MRV:
             return self._get_actions_mrv()
+        elif strategy == self.ActionsStrategy.ALL:
+            return self._get_actions_all()
 
     def _get_actions_first(self) -> list[tuple[int, int]]:
         """Pick the first empty cell found."""
@@ -138,6 +141,15 @@ class Sudoku:
                 best_vals = vals
 
         return [(best_idx, v) for v in best_vals]
+
+    def _get_actions_all(self) -> list[tuple[int, int]]:
+        """Return all possible actions for all empty cells."""
+        actions = []
+        for idx, val in enumerate(self.grid):
+            if val == 0:
+                for v in self.valid_values(idx):
+                    actions.append((idx, v))
+        return actions
 
     # magic methods
 

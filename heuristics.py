@@ -1,6 +1,10 @@
 from Sudoku import Sudoku
 
 
+def h_zero(state: Sudoku) -> int:
+    return 0
+
+
 def h_valid_sum(state: Sudoku) -> int:
     cost = 0
     empty_indices = [i for i, x in enumerate(state.grid) if x == 0]
@@ -15,3 +19,4 @@ def h_valid_sum(state: Sudoku) -> int:
         cost += num_options
 
     return cost
+

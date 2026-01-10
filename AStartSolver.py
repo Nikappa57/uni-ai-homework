@@ -98,12 +98,12 @@ class AStarSolver:
 
 
 if __name__ == "__main__":
-    from heuristics import h_valid_sum
+    from heuristics import h_valid_sum, h_zero
 
     instance = '4.....8.5.3..........7......2.....6.....8.4......1.......6.3.7.5..2.....1.4......'
     puzzle = Sudoku.from_string(instance)
     solver = AStarSolver(heuristic_func=h_valid_sum,
-                         strategy=Sudoku.ActionsStrategy.MRV)
+                         strategy=Sudoku.ActionsStrategy.ALL)
     solution_node = solver.solve(puzzle)
     if solution_node:
         # Reconstruct solution path
