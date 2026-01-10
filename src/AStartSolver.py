@@ -1,6 +1,6 @@
 from heapq import heappop, heappush
 
-from Sudoku import Sudoku
+from src.Sudoku import Sudoku
 
 
 class Node:
@@ -98,7 +98,7 @@ class AStarSolver:
 
 
 if __name__ == "__main__":
-    from heuristics import h_valid_sum, h_zero
+    from src.heuristics import h_valid_sum, h_zero
 
     instance = '4.....8.5.3..........7......2.....6.....8.4......1.......6.3.7.5..2.....1.4......'
     puzzle = Sudoku.from_string(instance)

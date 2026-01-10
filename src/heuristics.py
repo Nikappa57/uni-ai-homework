@@ -1,4 +1,4 @@
-from Sudoku import Sudoku
+from src.Sudoku import Sudoku
 
 
 def h_zero(state: Sudoku) -> int:
