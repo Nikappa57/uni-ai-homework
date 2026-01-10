@@ -45,27 +45,6 @@ class Sudoku:
                 raise ValueError(f"Invalid char '{c}'.")
         return cls(grid)
 
-    def __str__(self):
-        lines = []
-        horizontal_line = "- " * 11
-
-        for r in range(self.SIZE):
-            if r > 0 and r % self.BOX_SIZE == 0:
-                lines.append(horizontal_line.strip())
-
-            row_chars = []
-            for c in range(self.SIZE):
-                if c > 0 and c % self.BOX_SIZE == 0:
-                    row_chars.append("|")
-
-                val = self.grid[r * self.SIZE + c]
-                display_char = str(val) if val != 0 else "."
-                row_chars.append(display_char)
-
-            lines.append(" ".join(row_chars))
-
-        return "\n".join(lines)
-
     def is_valid_move(self, index, value) -> bool:
         if self.grid[index] != 0:
             return False
@@ -160,13 +139,44 @@ class Sudoku:
 
         return [(best_idx, v) for v in best_vals]
 
+    # magic methods
+
+    def __eq__(self, other):
+        if isinstance(other, Sudoku):
+            return self.grid == other.grid
+        return False
+
+    def __hash__(self):
+        # need for set operations
+        return hash(tuple(self.grid))
+
+    def __str__(self):
+        lines = []
+        horizontal_line = "- " * 11
+
+        for r in range(self.SIZE):
+            if r > 0 and r % self.BOX_SIZE == 0:
+                lines.append(horizontal_line.strip())
+
+            row_chars = []
+            for c in range(self.SIZE):
+                if c > 0 and c % self.BOX_SIZE == 0:
+                    row_chars.append("|")
+
+                val = self.grid[r * self.SIZE + c]
+                display_char = str(val) if val != 0 else "."
+                row_chars.append(display_char)
+
+            lines.append(" ".join(row_chars))
+
+        return "\n".join(lines)
+
 
 Sudoku._initialize_peers()
 
 if __name__ == "__main__":
     instance = '4.....8.5.3..........7......2.....6.....8.4......1.......6.3.7.5..2.....1.4......'
 
-    print("--- Loading Sudoku ---")
     puzzle = Sudoku.from_string(instance)
     print(puzzle)
 
