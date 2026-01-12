@@ -6,13 +6,13 @@ class Sudoku:
     SIZE = 9
     BOX_SIZE = 3
     PEERS = {}
-    DIGIT_SET = set(range(1, 10))
+    DIGIT_SET = set(range(1, SIZE + 1))
 
     def __init__(self, board_grid: list[int]):
         self.grid = board_grid
 
     @classmethod
-    def _initialize_peers(cls):
+    def _initialize_peers(cls) -> None:
         for index in range(81):
             r, c = divmod(index, cls.SIZE)
             box_r, box_c = (r // 3) * 3, (c // 3) * 3
@@ -30,16 +30,16 @@ class Sudoku:
     def from_string(cls, board_str: str):
         _board_str: str = board_str.strip()
 
-        if len(_board_str) != 81:
+        if len(_board_str) != Sudoku.SIZE * Sudoku.SIZE:
             raise ValueError(
-                f"Invalid board length: expected 81 characters, got {len(_board_str)}."
+                f"Invalid board length: expected {Sudoku.SIZE * Sudoku.SIZE} characters, got {len(_board_str)}."
             )
 
         grid: list[int] = []
         for c in _board_str:
             if c.isdigit():
                 grid.append(int(c))
-            elif c == '.':
+            elif c in ('.', '0'):
                 grid.append(0)
             else:
                 raise ValueError(f"Invalid char '{c}'.")
@@ -120,7 +120,7 @@ class Sudoku:
             return []
 
         best_idx = -1
-        min_options = 10  # Max possible is 9
+        min_options = Sudoku.SIZE + 1
         best_vals = set()
 
         for idx in empties:
