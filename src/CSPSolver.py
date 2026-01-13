@@ -1,6 +1,7 @@
 from constraint import AllDifferentConstraint, Problem
 
 from Sudoku import Sudoku
+import sys
 
 
 class CSPSolver:
@@ -62,7 +63,7 @@ class CSPSolver:
 
 
 if __name__ == "__main__":
-    instance = '4.....8.5.3..........7......2.....6.....8.4......1.......6.3.7.5..2.....1.4......'
+    instance = sys.argv[1] if len(sys.argv) > 1 else '4.....8.5.3..........7......2.....6.....8.4......1.......6.3.7.5..2.....1.4......'
 
     puzzle = Sudoku.from_string(instance)
     print("Initial Sudoku:")

@@ -34,6 +34,8 @@ class AStarSolver:
         self.strategy = strategy
         self.nodes_expanded = 0
         self.nodes_generated = 0
+        self.max_frontier_size = 0
+        self.max_explored_size = 0
 
     def solve(self, initial_state) -> Node | None:
         # node <- a node with n.State = problem.InitialState
@@ -50,6 +52,10 @@ class AStarSolver:
 
         # loop do
         while frontier:  # if Empty?(frontier)
+
+            # Track max sizes
+            self.max_frontier_size = max(self.max_frontier_size, len(frontier))
+            self.max_explored_size = max(self.max_explored_size, len(explored))
 
             # n <- Pop(frontier)
             current_node = heappop(frontier)
@@ -98,12 +104,16 @@ class AStarSolver:
 
 
 if __name__ == "__main__":
-    from src.heuristics import h_domain_sum, h_zero
+    import sys
 
-    instance = '4.....8.5.3..........7......2.....6.....8.4......1.......6.3.7.5..2.....1.4......'
+    from heuristics import h_domain_sum, h_zero
+
+    instance = sys.argv[1] if len(
+        sys.argv
+    ) > 1 else '4.....8.5.3..........7......2.....6.....8.4......1.......6.3.7.5..2.....1.4......'
     puzzle = Sudoku.from_string(instance)
     solver = AStarSolver(heuristic_func=h_domain_sum,
-                         strategy=Sudoku.ActionsStrategy.ALL)
+                         strategy=Sudoku.ActionsStrategy.MRV)
     solution_node = solver.solve(puzzle)
     if solution_node:
         # Reconstruct solution path
@@ -123,10 +133,13 @@ if __name__ == "__main__":
         print(f"Solved in {len(path) - 1} moves.")
         print(f"Nodes expanded: {solver.nodes_expanded}")
         print(f"Nodes generated: {solver.nodes_generated}")
+        print(f"Max frontier size: {solver.max_frontier_size}")
+        print(f"Max explored size: {solver.max_explored_size}")
         print(f"Solution depth: {solution_node.g}")
         print(f"Solution heuristic cost: {solution_node.h}")
         print(f"Solution total cost (f): {solution_node.f}")
         print(f"Final state is goal: {solution_node.state.is_goal()}")
         print(f"Final state:\n{solution_node.state}")
     else:
+        print("No solution found.")
         print("No solution found.")
